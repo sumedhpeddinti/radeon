@@ -15,5 +15,13 @@ module.exports = defineConfig({
       jwtSecret: process.env.JWT_SECRET,
       cookieSecret: process.env.COOKIE_SECRET,
     }
-  }
+  },
+  modules: [
+    {
+      resolve: '@medusajs/medusa/file-local',
+      options: {
+        backend_url: `${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || 'https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net'}/static`,
+      },
+    },
+  ],
 })
