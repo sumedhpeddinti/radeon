@@ -29,5 +29,6 @@ COPY --from=builder /app/medusa-config.ts ./
 COPY --from=builder /app/tsconfig.json ./
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/.medusa/server/public ./public
 
 CMD ["npx", "medusa", "start"]
