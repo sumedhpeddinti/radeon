@@ -6,6 +6,10 @@ on:
       - radeon
     paths:
       - 'backend/**'
+      - 'store-userview/**'
+      - 'Dockerfile'
+      - 'nginx.conf'
+      - 'start.sh'
       - '.github/workflows/deploy-azure.yml'
   workflow_dispatch:
 
@@ -33,7 +37,7 @@ jobs:
       - name: Build and push container image
         uses: docker/build-push-action@v5
         with:
-          context: ./backend
-          file: ./backend/Dockerfile
+          context: .
+          file: ./Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/radeon:latest
