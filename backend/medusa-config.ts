@@ -8,16 +8,10 @@ module.exports = defineConfig({
     databaseDriverOptions: process.env.DATABASE_URL?.includes('localhost')
       ? {}
       : { connection: { ssl: { rejectUnauthorized: false } } },
-    // Force session cookies so the Admin SPA can authenticate across page navigations
+    // Force session persistence so Admin SPA stays logged in across page navigations
     sessionOptions: {
       resave: true,
       saveUninitialized: true,
-      cookie: {
-        httpOnly: true,
-        secure: false,       // Nginx handles TLS termination; internal traffic is plain HTTP
-        sameSite: 'lax',
-        maxAge: 86400000,    // 24 hours
-      }
     },
     http: {
       storeCors: process.env.STORE_CORS!,
