@@ -43,10 +43,11 @@ jobs:
           tags: ghcr.io/${{ github.repository_owner }}/radeon:latest
 
       - name: Trigger Azure Deployment Webhook
-        if: ${{ env.AZURE_WEBHOOK_URL != '' }}
         env:
           AZURE_WEBHOOK_URL: ${{ secrets.AZURE_WEBHOOK_URL }}
+          DEFAULT_WEBHOOK: "https://$radeon:YqmcEzagwxo2pZPbJunB8AsHYx3W2SaC9ZKDu8LWXwriCcYrrpzcshfxDeS4@radeon-hphbfha8emfthkbf.scm.eastasia-01.azurewebsites.net/api/registry/webhook"
         run: |
+          WEBHOOK="${AZURE_WEBHOOK_URL:-$DEFAULT_WEBHOOK}"
           echo "Triggering Azure App Service webhook..."
-          curl -s -X POST "$AZURE_WEBHOOK_URL"
+          curl -s -i -X POST "$WEBHOOK"
           echo "Azure webhook triggered successfully."
