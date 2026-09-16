@@ -18,9 +18,17 @@ module.exports = defineConfig({
   },
   modules: [
     {
-      resolve: '@medusajs/medusa/file-local',
+      resolve: '@medusajs/file',
       options: {
-        backend_url: `${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || 'https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net'}/static`,
+        providers: [
+          {
+            resolve: '@medusajs/file-local',
+            id: 'local',
+            options: {
+              backend_url: `${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || 'https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net'}/static`,
+            },
+          },
+        ],
       },
     },
   ],
