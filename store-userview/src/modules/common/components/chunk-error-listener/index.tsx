@@ -18,8 +18,27 @@ export default function ChunkErrorListener() {
       }
     }
 
+    const handleRejection = (event: PromiseRejectionEvent) => {
+      const reason = event?.reason
+      const isChunkError =
+        reason?.name === "ChunkLoadError" ||
+        reason?.message?.includes("Loading chunk") ||
+        reason?.message?.includes("ChunkLoadError")
+
+      if (isChunkError) {
+        console.warn(
+          "ChunkLoadError detected due to new build deployment. Reloading page..."
+        )
+        window.location.reload()
+      }
+    }
+
     window.addEventListener("error", handleWindowError)
-    return () => window.removeEventListener("error", handleWindowError)
+    window.addEventListener("unhandledrejection", handleRejection)
+    return () => {
+      window.removeEventListener("error", handleWindowError)
+      window.removeEventListener("unhandledrejection", handleRejection)
+    }
   }, [])
 
   return null
