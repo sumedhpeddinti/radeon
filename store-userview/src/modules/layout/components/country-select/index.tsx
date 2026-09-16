@@ -29,6 +29,8 @@ type CountrySelectProps = {
 const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
   const [current, setCurrent] = useState<CountryOption | undefined>(undefined)
 
+  const params = useParams()
+  const countryCode = (params?.countryCode as string) || "in"
   const pathname = usePathname()
   const currentPath = countryCode && pathname.startsWith(`/${countryCode}`)
     ? pathname.slice(`/${countryCode}`.length) || "/"
