@@ -60,18 +60,24 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
-  const collection = await getCollectionByHandle(params.handle)
+  try {
+    const collection = await getCollectionByHandle(params.handle)
 
-  if (!collection) {
-    notFound()
+    if (!collection) {
+      return {
+        title: "Collection | Radeon",
+      }
+    }
+
+    return {
+      title: `${collection.title} | Radeon`,
+      description: `${collection.title} collection`,
+    } as Metadata
+  } catch {
+    return {
+      title: "Collection | Radeon",
+    }
   }
-
-  const metadata = {
-    title: `${collection.title} | Radeon`,
-    description: `${collection.title} collection`,
-  } as Metadata
-
-  return metadata
 }
 
 export default async function CollectionPage(props: Props) {

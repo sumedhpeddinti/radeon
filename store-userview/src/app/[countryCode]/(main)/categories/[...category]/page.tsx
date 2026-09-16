@@ -55,8 +55,13 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   try {
     const productCategory = await getCategoryByHandle(params.category)
 
-    const title = productCategory.name + " | Radeon"
+    if (!productCategory) {
+      return {
+        title: "Category | Radeon",
+      }
+    }
 
+    const title = productCategory.name + " | Radeon"
     const description = productCategory.description ?? `${title} category.`
 
     return {
@@ -67,7 +72,9 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       },
     }
   } catch {
-    notFound()
+    return {
+      title: "Category | Radeon",
+    }
   }
 }
 

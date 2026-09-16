@@ -1,9 +1,13 @@
 import { HttpTypes } from "@medusajs/types"
 import { NextRequest, NextResponse } from "next/server"
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
-const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
-const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || "dk"
+const BACKEND_URL =
+  process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL ||
+  "https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net"
+const PUBLISHABLE_API_KEY =
+  process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY ||
+  "pk_b8e3def8a11e2bb7a71766f316810de8740a75d1cb42768c192d810d43ef5027"
+const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || "in"
 
 const regionMapCache = {
   regionMap: new Map<string, HttpTypes.StoreRegion>(),
@@ -98,7 +102,7 @@ async function getCountryCode(
 }
 
 /**
- * Middleware to handle region selection and onboarding status.
+ * Middleware to handle clean URL routing without /in prefix.
  */
 export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.includes(".")) {
@@ -108,32 +112,29 @@ export async function middleware(request: NextRequest) {
   const cacheIdCookie = request.cookies.get("_medusa_cache_id")
   const cacheId = cacheIdCookie?.value || crypto.randomUUID()
 
-  const regionMap = await getRegionMap(cacheId)
-  const countryCode = await getCountryCode(request, regionMap)
+  const pathname = request.nextUrl.pathname
+  const firstPathSegment = pathname.split("/")[1]?.toLowerCase()
+  const queryString = request.nextUrl.search || ""
 
-  // if the country code is available, use it, otherwise use the default region
-  const country = countryCode || DEFAULT_REGION
-  const firstPathSegment = request.nextUrl.pathname.split("/")[1]?.toLowerCase()
-  const urlHasCountry = firstPathSegment === country.toLowerCase()
-
-  if (urlHasCountry) {
-    if (!cacheIdCookie) {
-      const response = NextResponse.next()
-      response.cookies.set("_medusa_cache_id", cacheId, {
-        maxAge: 60 * 60 * 24,
-      })
-      return response
-    }
-    return NextResponse.next()
+  // If someone visits /in or /in/* (e.g. old link), redirect (308) to the clean URL without /in
+  if (firstPathSegment === "in") {
+    const cleanPath = pathname.replace(/^\/in(\/|$)/, "/") || "/"
+    const redirectUrl = `${request.nextUrl.origin}${cleanPath}${queryString}`
+    return NextResponse.redirect(redirectUrl, 308)
   }
 
-  // if the url doesn't have the country, redirect to it
-  const redirectPath =
-    request.nextUrl.pathname === "/" ? "" : request.nextUrl.pathname
-  const queryString = request.nextUrl.search || ""
-  const redirectUrl = `${request.nextUrl.origin}/${country}${redirectPath}${queryString}`
+  // Rewrite internally to /in/... so Next.js matches [countryCode] dynamic route with countryCode="in",
+  // while keeping the browser address bar completely clean (e.g. "/", "/store", "/categories/pants")
+  const rewriteUrl = new URL(`/in${pathname}${queryString}`, request.url)
+  const response = NextResponse.rewrite(rewriteUrl)
 
-  return NextResponse.redirect(redirectUrl, 307)
+  if (!cacheIdCookie) {
+    response.cookies.set("_medusa_cache_id", cacheId, {
+      maxAge: 60 * 60 * 24,
+    })
+  }
+
+  return response
 }
 
 export const config = {
