@@ -22,9 +22,9 @@ RUN npm ci
 COPY store-userview/ ./
 ENV NODE_ENV=production
 ENV NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_b8e3def8a11e2bb7a71766f316810de8740a75d1cb42768c192d810d43ef5027
-ENV NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net
+ENV NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://radeon.online
 ENV NEXT_PUBLIC_DEFAULT_REGION=in
-ENV NEXT_PUBLIC_BASE_URL=https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net
+ENV NEXT_PUBLIC_BASE_URL=https://radeon.online
 RUN npm run build
 
 # ==========================================
@@ -49,9 +49,9 @@ COPY --from=backend-builder /app/.medusa/server/public ./public
 WORKDIR /app/storefront
 ENV NODE_ENV=production \
     NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_b8e3def8a11e2bb7a71766f316810de8740a75d1cb42768c192d810d43ef5027 \
-    NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net \
+    NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://radeon.online \
     NEXT_PUBLIC_DEFAULT_REGION=in \
-    NEXT_PUBLIC_BASE_URL=https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net
+    NEXT_PUBLIC_BASE_URL=https://radeon.online
 COPY --from=storefront-builder /app/package*.json ./
 COPY --from=storefront-builder /app/node_modules ./node_modules
 COPY --from=storefront-builder /app/.next ./.next
@@ -69,9 +69,9 @@ ENV PORT=9000 \
     ADMIN_AUTH_TYPE=jwt \
     ADMIN_JWT_TOKEN_STORAGE_KEY=medusa_jwt_token \
     NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_b8e3def8a11e2bb7a71766f316810de8740a75d1cb42768c192d810d43ef5027 \
-    NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net \
+    NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://radeon.online \
     NEXT_PUBLIC_DEFAULT_REGION=in \
-    NEXT_PUBLIC_BASE_URL=https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net
+    NEXT_PUBLIC_BASE_URL=https://radeon.online
 EXPOSE 9000
 
 CMD ["/app/start.sh"]

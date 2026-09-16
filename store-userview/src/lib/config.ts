@@ -2,7 +2,7 @@ import { getLocaleHeader } from "@lib/util/get-locale-header"
 import Medusa, { FetchArgs, FetchInput } from "@medusajs/js-sdk"
 
 // Defaults to standard port for Medusa server
-let MEDUSA_BACKEND_URL = "https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net"
+let MEDUSA_BACKEND_URL = "https://radeon.online"
 
 if (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {
   MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL

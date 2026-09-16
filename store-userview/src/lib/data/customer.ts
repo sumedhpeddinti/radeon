@@ -134,6 +134,57 @@ export async function login(
   return completeLogin(email, password)
 }
 
+export type PasswordResetState =
+  | { state: "error"; error: string }
+  | { state: "success"; message: string }
+  | null
+
+export async function requestPasswordReset(
+  _currentState: unknown,
+  formData: FormData
+): Promise<PasswordResetState> {
+  const email = formData.get("email") as string
+  if (!email) {
+    return { state: "error", error: "Please enter a valid email address." }
+  }
+
+  try {
+    await sdk.auth.resetPassword("customer", "emailpass", {
+      identifier: email,
+    })
+    return {
+      state: "success",
+      message:
+        "If an account with that email exists, reset instructions have been sent.",
+    }
+  } catch (error) {
+    return { state: "error", error: "Failed to request password reset. Please try again." }
+  }
+}
+
+export async function resetPasswordWithToken(
+  _currentState: unknown,
+  formData: FormData
+): Promise<PasswordResetState> {
+  const token = formData.get("token") as string
+  const password = formData.get("password") as string
+
+  if (!token || !password) {
+    return { state: "error", error: "Token and new password are required." }
+  }
+
+  try {
+    await sdk.auth.updateProvider("customer", "emailpass", { password }, token)
+    return {
+      state: "success",
+      message: "Your password has been successfully reset. You can now sign in.",
+    }
+  } catch (error) {
+    return { state: "error", error: "Invalid or expired password reset token." }
+  }
+}
+
+
 // Logs the customer in and reconciles the customer record. The behavior is
 // driven entirely by the backend's login response, so it works whether or not
 // email verification is enabled.
