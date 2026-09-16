@@ -8,11 +8,6 @@ module.exports = defineConfig({
     databaseDriverOptions: process.env.DATABASE_URL?.includes('localhost')
       ? {}
       : { connection: { ssl: { rejectUnauthorized: false } } },
-    // Force session persistence so Admin SPA stays logged in across page navigations
-    sessionOptions: {
-      resave: true,
-      saveUninitialized: true,
-    },
     http: {
       storeCors: process.env.STORE_CORS!,
       adminCors: process.env.ADMIN_CORS!,

@@ -8,6 +8,8 @@ COPY backend/package*.json ./
 RUN npm ci
 COPY backend/ ./
 ENV NODE_ENV=production
+ENV ADMIN_AUTH_TYPE=jwt
+ENV ADMIN_JWT_TOKEN_STORAGE_KEY=medusa_jwt_token
 RUN npm run build
 
 # ==========================================
@@ -64,6 +66,8 @@ RUN sed -i 's/\r$//' /app/start.sh && chmod +x /app/start.sh
 
 WORKDIR /app
 ENV PORT=9000 \
+    ADMIN_AUTH_TYPE=jwt \
+    ADMIN_JWT_TOKEN_STORAGE_KEY=medusa_jwt_token \
     NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_b8e3def8a11e2bb7a71766f316810de8740a75d1cb42768c192d810d43ef5027 \
     NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net \
     NEXT_PUBLIC_DEFAULT_REGION=in \
@@ -71,4 +75,3 @@ ENV PORT=9000 \
 EXPOSE 9000
 
 CMD ["/app/start.sh"]
-
