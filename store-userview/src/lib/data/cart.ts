@@ -259,7 +259,7 @@ export async function applyPromotions(codes: string[]) {
   const cartId = await getCartId()
 
   if (!cartId) {
-    throw new Error("No existing cart found")
+    return { error: "No existing cart found" }
   }
 
   const headers = {
@@ -274,8 +274,13 @@ export async function applyPromotions(codes: string[]) {
 
       const fulfillmentCacheTag = await getCacheTag("fulfillment")
       revalidateTag(fulfillmentCacheTag)
+      return { success: true }
     })
-    .catch(medusaError)
+    .catch((err) => {
+      const message =
+        err?.response?.data?.message || err?.message || "Invalid promotion code"
+      return { error: String(message) }
+    })
 }
 
 export async function applyGiftCard(code: string) {
