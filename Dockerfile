@@ -45,7 +45,11 @@ COPY --from=backend-builder /app/.medusa/server/public ./public
 
 # Copy Storefront
 WORKDIR /app/storefront
-ENV NODE_ENV=production
+ENV NODE_ENV=production \
+    NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_b8e3def8a11e2bb7a71766f316810de8740a75d1cb42768c192d810d43ef5027 \
+    NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net \
+    NEXT_PUBLIC_DEFAULT_REGION=in \
+    NEXT_PUBLIC_BASE_URL=https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net
 COPY --from=storefront-builder /app/package*.json ./
 COPY --from=storefront-builder /app/node_modules ./node_modules
 COPY --from=storefront-builder /app/.next ./.next
@@ -59,7 +63,12 @@ COPY start.sh /app/start.sh
 RUN sed -i 's/\r$//' /app/start.sh && chmod +x /app/start.sh
 
 WORKDIR /app
-ENV PORT=9000
+ENV PORT=9000 \
+    NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_b8e3def8a11e2bb7a71766f316810de8740a75d1cb42768c192d810d43ef5027 \
+    NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net \
+    NEXT_PUBLIC_DEFAULT_REGION=in \
+    NEXT_PUBLIC_BASE_URL=https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net
 EXPOSE 9000
 
 CMD ["/app/start.sh"]
+
