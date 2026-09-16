@@ -9,9 +9,9 @@ export NEXT_PUBLIC_MEDUSA_BACKEND_URL="${NEXT_PUBLIC_MEDUSA_BACKEND_URL:-https:/
 export NEXT_PUBLIC_DEFAULT_REGION="${NEXT_PUBLIC_DEFAULT_REGION:-in}"
 export NEXT_PUBLIC_BASE_URL="${NEXT_PUBLIC_BASE_URL:-https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net}"
 
-export STORE_CORS="${STORE_CORS:-http://localhost:8000,https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net}"
-export ADMIN_CORS="${ADMIN_CORS:-http://localhost:5173,http://localhost:9000,https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net}"
-export AUTH_CORS="${AUTH_CORS:-http://localhost:5173,http://localhost:9000,https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net}"
+export STORE_CORS="${STORE_CORS:-http://localhost:8000,https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net,https://radeon.online,https://www.radeon.online}"
+export ADMIN_CORS="${ADMIN_CORS:-http://localhost:5173,http://localhost:9000,https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net,https://radeon.online,https://www.radeon.online}"
+export AUTH_CORS="${AUTH_CORS:-http://localhost:5173,http://localhost:9000,https://radeon-hphbfha8emfthkbf.eastasia-01.azurewebsites.net,https://radeon.online,https://www.radeon.online}"
 export JWT_SECRET="${JWT_SECRET:-e9dd289839c9d2452695c03648992d3ef3bbb0ad23dc9f8c0fd5e1ee7f9190cd}"
 export COOKIE_SECRET="${COOKIE_SECRET:-d6fdf10f29f0c7328409b2c6104e8129b23228e38735700af9a310125405fa35}"
 export DATABASE_URL="${DATABASE_URL:-postgresql://postgres.hokurffekzfhemoitgub:Sum%402005Teja%402006@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres}"
