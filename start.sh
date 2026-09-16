@@ -24,7 +24,7 @@ echo "Medusa started with PID $MEDUSA_PID on port 9001"
 
 # 2. Start Next.js storefront on port 8000
 cd /app/storefront
-PORT=8000 npm run start -- -p 8000 &
+npm run start &
 STOREFRONT_PID=$!
 echo "Storefront started with PID $STOREFRONT_PID on port 8000"
 
